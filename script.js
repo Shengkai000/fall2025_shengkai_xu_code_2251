@@ -1,4 +1,4 @@
-/* script.js — shared for all pages */
+/* script.js — shared for all pages + animations */
 
 // --- Data -------------------------------------------------------------
 
@@ -7,40 +7,35 @@ const featuredTutorials = [
   {
     title: "Unity Movement Script",
     description: "Move a player using Rigidbody and C# in Unity.",
-    category: "Unity",
-    imageUrl: "images/unity_movement.jpg"
+    category: "Unity"
   },
   {
     title: "Unreal Blueprint Basics",
     description: "Create gameplay logic visually with Blueprints.",
-    category: "Unreal",
-    imageUrl: "images/unreal_blueprint.jpg"
+    category: "Unreal"
   },
   {
     title: "Unity Loop Examples",
     description: "for / while / foreach with practical samples.",
-    category: "Unity",
-    imageUrl: "images/unity_loops.jpg"
+    category: "Unity"
   },
   {
     title: "C++ Conditions in Unreal",
     description: "if / else and switch patterns for gameplay code.",
-    category: "Unreal",
-    imageUrl: "images/unreal_condition.jpg"
+    category: "Unreal"
   },
   {
     title: "Shader Graph Tips",
     description: "Stylish materials with Unity’s Shader Graph.",
-    category: "Unity",
-    imageUrl: "images/unity_shader.jpg"
+    category: "Unity"
   }
 ];
 
 // Unity Community: category cards (title + count text)
 const unityCategories = [
-  { title: "C#", countText: "387 list problems", href: "unity-csharp.html" },
-  { title: "Loop", countText: "234 list problems", href: "unity-csharp.html" },
-  { title: "Condition", countText: "198 list problems", href: "unity-csharp.html" }
+  { title: "C#",       countText: "387 list problems", href: "unity-csharp.html" },
+  { title: "Loop",     countText: "234 list problems", href: "unity-csharp.html" },
+  { title: "Condition",countText: "198 list problems", href: "unity-csharp.html" }
 ];
 
 // Unity C#: list rows (rank, title, excerpt, rating, link)
@@ -81,8 +76,11 @@ function createEl(tag, attrs = {}, ...children) {
   });
   children.forEach(child => {
     if (child == null) return;
-    if (typeof child === "string") el.appendChild(document.createTextNode(child));
-    else el.appendChild(child);
+    if (typeof child === "string") {
+      el.appendChild(document.createTextNode(child));
+    } else {
+      el.appendChild(child);
+    }
   });
   return el;
 }
@@ -94,9 +92,9 @@ function buildStars(rating) {
     const span = createEl("span", { class: "star" });
     const diff = rating - i;
     if (diff >= 0) {
-      // full star (do nothing, default var(--star))
+      // full star (default color)
     } else if (diff > -1 && diff < 0) {
-      // half star via linear-gradient like in your HTML
+      // half star via gradient
       const pct = Math.round((rating - (i - 1)) * 100); // 1..99
       span.style.background = `linear-gradient(90deg, var(--star) ${pct}%, var(--star-muted) ${pct}%)`;
     } else {
@@ -110,26 +108,47 @@ function buildStars(rating) {
 
 // --- Renderers --------------------------------------------------------
 
+
 function renderHome() {
   const container = document.getElementById("content-container");
   if (!container) return;
 
-  featuredTutorials.forEach(item => {
+
+  const loader = createEl("div", { class: "loader" });
+  container.appendChild(loader);
+
+  featuredTutorials.forEach((item) => {
     const card = createEl("div", { class: "item" });
-            card.append(h3, p, badge);
+
+    const h3 = createEl("h3", { text: item.title });
+    const p = createEl("p", { text: item.description });
+    const badge = createEl("span", { class: "category", text: item.category });
+
+    card.append(h3, p, badge);
     container.appendChild(card);
   });
+
+
+  loader.remove();
 }
 
+// Unity Community 
 function renderUnityCommunity() {
   const cards = document.querySelector(".cards");
   if (!cards) return;
 
-  // If cards already have children (from HTML), don't duplicate
+  
   if (cards.children.length > 0) return;
 
-  unityCategories.forEach(c => {
-    const a = createEl("a", { class: "card", href: c.href, role: "listitem", "aria-label": `${c.title} ${c.countText}` },
+  unityCategories.forEach((c) => {
+    const a = createEl(
+      "a",
+      {
+        class: "card",
+        href: c.href,
+        role: "listitem",
+        "aria-label": `${c.title} ${c.countText}`,
+      },
       createEl("h4", { text: c.title }),
       createEl("p", { class: "muted", text: c.countText })
     );
@@ -137,18 +156,22 @@ function renderUnityCommunity() {
   });
 }
 
+
 function renderUnityCSharpList() {
   const list = document.querySelector(".list");
-  // Only render if there is a .list and it's empty (to avoid duplicate rows)
   if (!list || list.children.length > 0) return;
 
-  csharpPosts.forEach(post => {
-    const rank = createEl("div", { class: "rank" },
+  csharpPosts.forEach((post) => {
+    const rank = createEl(
+      "div",
+      { class: "rank" },
       createEl("small", { text: "Top" }),
       createEl("div", { text: String(post.rank) })
     );
 
-    const content = createEl("div", { class: "content" },
+    const content = createEl(
+      "div",
+      { class: "content" },
       createEl("h4", { text: post.title }),
       createEl("p", { text: post.excerpt })
     );
@@ -160,11 +183,77 @@ function renderUnityCSharpList() {
 }
 
 
+// --- Animations & Microinteractions ----------------------------------
+
+function initPageAnimations() {
+
+  document.body.classList.add("is-loaded");
+
+  // item / card / row / article
+  const toReveal = document.querySelectorAll(".item, .card, .row, .article");
+  if (!toReveal.length) return;
+
+  //IntersectionObserver 
+  if (!("IntersectionObserver" in window)) {
+    toReveal.forEach((el) => {
+      el.classList.add("reveal", "is-visible");
+    });
+    return;
+  }
+
+  const observer = new IntersectionObserver(
+    (entries, obs) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          obs.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.1 }
+  );
+
+  toReveal.forEach((el) => {
+    el.classList.add("reveal");
+    observer.observe(el);
+  });
+}
+
+
+function initMicroInteractions() {
+  const clickable = document.querySelectorAll(".item, .card, .row");
+  clickable.forEach((el) => {
+    el.addEventListener("mousedown", () => el.classList.add("pulse"));
+    el.addEventListener("mouseup", () => el.classList.remove("pulse"));
+    el.addEventListener("mouseleave", () => el.classList.remove("pulse"));
+  });
+
+  const cta = document.querySelector(".intro a");
+  if (cta) {
+    cta.addEventListener("click", () => {
+      cta.classList.add("pulse");
+      setTimeout(() => cta.classList.remove("pulse"), 220);
+    });
+  }
+
+  const homeBtn = document.querySelector(".home");
+  if (homeBtn) {
+    homeBtn.addEventListener("click", () => {
+      homeBtn.classList.add("pulse");
+      setTimeout(() => homeBtn.classList.remove("pulse"), 220);
+    });
+  }
+}
+
+
 // --- Init -------------------------------------------------------------
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Safely run on all pages. Renderers will no-op if containers aren't present.
+ 
   renderHome();
   renderUnityCommunity();
   renderUnityCSharpList();
+
+  initPageAnimations();
+  initMicroInteractions();
 });
