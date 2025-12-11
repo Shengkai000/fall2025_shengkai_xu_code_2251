@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Unreal Community</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <a class="home" href="index.html" aria-label="Go to Home">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M10.2 2.6a2.5 2.5 0 0 1 3.6 0l7.2 7.7c.7.7.2 1.9-.8 1.9h-1.2v7.9c0 .8-.7 1.5-1.5 1.5H6.5c-.8 0-1.5-.7-1.5-1.5V12H3.9c-1 0-1.5-1.2-.8-1.9l7.2-7.7z"/>
+        </svg>
+      </a>
+      <h1 class="page-title">Unreal Community</h1>
+    </header>
+
+    <div class="grid">
+      <aside class="sidebar" aria-label="Unreal subtopics">
+        <h2>Unreal Topics</h2>
+
+        <div class="section">
+          <h3>Blueprint</h3>
+          <ul>
+            <li><a href="unreal-blueprint.html">Blueprint Snippets</a></li>
+          </ul>
+        </div>
+
+        <div class="section">
+          <h3>C++</h3>
+          <ul>
+            <li><span class="pill pill-muted">Gameplay Classes (coming soon)</span></li>
+          </ul>
+        </div>
+      </aside>
+
+      <main class="main">
+        <section class="reveal-on-scroll">
+          <h2>Unreal highlights</h2>
+
+          <article class="card hover-float">
+            <h3><a href="unreal-blueprint-post.html">Open Door on Overlap</a></h3>
+            <p>
+              A classic Blueprint pattern: when the player overlaps a trigger volume,
+              the door opens with a simple Timeline animation.
+            </p>
+            <p class="meta">
+              <span class="pill">Blueprint</span>
+            </p>
+          </article>
+
+          <article class="card hover-float">
+            <h3><a href="unreal-blueprint.html">Blueprint Snippet Library</a></h3>
+            <p>
+              A demo list of small Blueprint patterns: trigger interactions, simple UI
+              updates, and basic character logic.
+            </p>
+            <p class="meta">
+              <span class="pill pill-soft">Demo</span>
+            </p>
+          </article>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

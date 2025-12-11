@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Best Game Code Community</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <h1 class="title">Best Game Code Community</h1>
+      <nav class="nav">
+        <a href="index.html" class="nav-link active">Home</a>
+        <a href="unity.html" class="nav-link">Unity</a>
+        <a href="unreal.html" class="nav-link">Unreal</a>
+      </nav>
+    </header>
+
+    <div class="grid">
+      <aside class="sidebar" aria-label="Topic list">
+        <h2>Topics</h2>
+
+        <div class="section">
+          <h3>Unity</h3>
+          <ul>
+            <li><a href="unity-csharp.html">C# Snippets</a></li>
+            <li><span class="pill pill-muted">Loop (coming soon)</span></li>
+            <li><span class="pill pill-muted">Condition (coming soon)</span></li>
+          </ul>
+        </div>
+
+        <div class="section">
+          <h3>Unreal</h3>
+          <ul>
+            <li><a href="unreal-blueprint.html">Blueprint Snippets</a></li>
+            <li><span class="pill pill-muted">C++ (coming soon)</span></li>
+          </ul>
+        </div>
+      </aside>
+
+      <main class="main">
+        <section class="hero reveal-on-scroll">
+          <div class="hero-chip">Playable code, ready to drop in</div>
+          <h2>Find game-ready code. Learn how to integrate it.</h2>
+          <p>
+            This demo shows how AI, configurable snippets, and integration recipes can
+            help programmers plug code into their own Unity and Unreal projects without
+            getting stuck on setup details.
+          </p>
+        </section>
+
+        <section class="reveal-on-scroll">
+          <h2>Featured Unity snippets</h2>
+
+          <article class="card hover-float">
+            <h3><a href="unity-csharp-post.html">Basic Movement Script</a></h3>
+            <p>
+              A minimal movement script with a configurator and AI helper.
+              Great starting point for any character or object movement.
+            </p>
+            <p class="meta">
+              <span class="pill">Unity</span>
+              <span class="pill">Movement</span>
+              <span class="pill pill-soft">Beginner</span>
+            </p>
+          </article>
+
+          <article class="card hover-float">
+            <h3><a href="unity-csharp-health.html">2D Health & Damage System</a></h3>
+            <p>
+              Simple health component for 2D games with damage, death, and respawn hook.
+            </p>
+            <p class="meta">
+              <span class="pill">Unity</span>
+              <span class="pill">Systems</span>
+            </p>
+          </article>
+        </section>
+
+        <section class="reveal-on-scroll">
+          <h2>Featured Unreal snippet</h2>
+          <article class="card hover-float">
+            <h3><a href="unreal-blueprint-post.html">Blueprint: Open Door on Overlap</a></h3>
+            <p>
+              A classic Blueprint pattern: open a door when the player enters a trigger volume,
+              with clean separation between trigger and door actor.
+            </p>
+            <p class="meta">
+              <span class="pill">Unreal</span>
+              <span class="pill">Blueprint</span>
+            </p>
+          </article>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

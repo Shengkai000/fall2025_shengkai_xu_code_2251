@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Unity C# – Camera Follow</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <a class="home" href="unity-csharp.html" aria-label="Back to Unity C#">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M15.7 4.3a1 1 0 0 1 0 1.4L10.4 11l5.3 5.3a1 1 0 0 1-1.4 1.4l-6-6a1 1 0 0 1 0-1.4l6-6a1 1 0 0 1 1.4 0z"/>
+        </svg>
+      </a>
+      <h1 class="page-title">Camera Follow</h1>
+    </header>
+
+    <main class="article-main">
+      <article class="article">
+        <header class="article-header reveal-on-scroll">
+          <p class="meta">
+            <span class="pill">Unity</span>
+            <span class="pill">C#</span>
+            <span class="pill pill-soft">Camera</span>
+          </p>
+          <h2>Smooth camera follow with clamped bounds</h2>
+          <p class="muted">
+            Make the camera follow a target (like a player) with smooth damping and optional
+            horizontal/vertical limits, ideal for platformers and top-down games.
+          </p>
+        </header>
+
+        <section class="reveal-on-scroll">
+          <h3>Base snippet</h3>
+          <pre><code id="snippet-code">
+// Smooth camera follow with optional bounds.
+
+using UnityEngine;
+
+public class CameraFollow : MonoBehaviour
+{
+    public Transform target;
+    public float smoothTime = 0.2f;
+
+    [Header("Optional bounds")]
+    public bool useBounds = false;
+    public Vector2 minBounds;
+    public Vector2 maxBounds;
+
+    private Vector3 velocity = Vector3.zero;
+
+    void LateUpdate()
+    {
+        if (target == null) return;
+
+        Vector3 desired = new Vector3(target.position.x, target.position.y, transform.position.z);
+
+        if (useBounds)
+        {
+            desired.x = Mathf.Clamp(desired.x, minBounds.x, maxBounds.x);
+            desired.y = Mathf.Clamp(desired.y, minBounds.y, maxBounds.y);
+        }
+
+        transform.position = Vector3.SmoothDamp(transform.position, desired, ref velocity, smoothTime);
+    }
+}
+          </code></pre>
+        </section>
+
+        <section class="integration-block reveal-on-scroll">
+          <h2>Integration Recipe</h2>
+          <ol>
+            <li>Attach <code>CameraFollow</code> to your main Camera GameObject.</li>
+            <li>In the Inspector, drag your player (or target) Transform into the <strong>Target</strong> field.</li>
+            <li>Play with <strong>Smooth Time</strong> to control how snappy or floaty the camera feels.</li>
+            <li>To limit camera movement, enable <strong>Use Bounds</strong> and set <strong>Min Bounds / Max Bounds</strong> based on your level size.</li>
+          </ol>
+        </section>
+
+        <section class="integration-block reveal-on-scroll">
+          <h2>Common Errors</h2>
+          <ul>
+            <li>
+              <strong>Camera doesn't move</strong> – Make sure the <code>Target</code> field is set and
+              that your player is actually moving.
+            </li>
+            <li>
+              <strong>Camera shakes or jitters</strong> – Check if you also move the camera from other scripts;
+              only one script should control the camera's transform.
+            </li>
+            <li>
+              <strong>Camera stops unexpectedly</strong> – If bounds are enabled, verify the min/max values;
+              your target might be clamped at the edges.
+            </li>
+          </ul>
+        </section>
+
+        <section class="integration-block ai-block reveal-on-scroll">
+          <h2>Ask AI about this snippet</h2>
+          <p class="muted">
+            Explain your camera setup (2D/3D, orthographic/perspective) and AI can suggest
+            better settings or variations, like vertical-only follow or room-based snapping.
+          </p>
+          <textarea
+            id="ai-question"
+            rows="4"
+            placeholder="Example: I use an orthographic 2D camera and only want to follow the player horizontally. How should I change this script?"
+          ></textarea>
+          <button id="ai-ask-btn" class="secondary-btn">Ask AI</button>
+          <div id="ai-answer" class="ai-answer" aria-live="polite"></div>
+        </section>
+      </article>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

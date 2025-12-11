@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Unity C# – Simple Shooting</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <a class="home" href="unity-csharp.html" aria-label="Back to Unity C#">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M15.7 4.3a1 1 0 0 1 0 1.4L10.4 11l5.3 5.3a1 1 0 0 1-1.4 1.4l-6-6a1 1 0 0 1 0-1.4l6-6a1 1 0 0 1 1.4 0z"/>
+        </svg>
+      </a>
+      <h1 class="page-title">Simple Shooting</h1>
+    </header>
+
+    <main class="article-main">
+      <article class="article">
+        <header class="article-header reveal-on-scroll">
+          <p class="meta">
+            <span class="pill">Unity</span>
+            <span class="pill">C#</span>
+            <span class="pill pill-soft">Combat</span>
+          </p>
+          <h2>Fire projectiles from a spawn point</h2>
+          <p class="muted">
+            Attach this script to a weapon or player and assign a bullet prefab to fire projectiles
+            in the forward direction with a simple fire rate.
+          </p>
+        </header>
+
+        <section class="reveal-on-scroll">
+          <h3>Base snippet</h3>
+          <pre><code id="snippet-code">
+// Simple projectile shooting script.
+
+using UnityEngine;
+
+public class SimpleShooter : MonoBehaviour
+{
+    public GameObject bulletPrefab;
+    public Transform firePoint;
+    public float bulletSpeed = 10f;
+    public float fireRate = 0.25f; // seconds between shots
+
+    private float nextFireTime = 0f;
+
+    void Update()
+    {
+        if (Input.GetButton("Fire1") && Time.time >= nextFireTime)
+        {
+            Shoot();
+            nextFireTime = Time.time + fireRate;
+        }
+    }
+
+    void Shoot()
+    {
+        if (bulletPrefab == null || firePoint == null) return;
+
+        GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+        Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+
+        if (rb != null)
+        {
+            rb.velocity = firePoint.right * bulletSpeed;
+        }
+    }
+}
+          </code></pre>
+        </section>
+
+        <section class="integration-block reveal-on-scroll">
+          <h2>Integration Recipe</h2>
+          <ol>
+            <li>Create a bullet prefab with a <code>Rigidbody2D</code> and collider (set to trigger or not based on your design).</li>
+            <li>Attach <code>SimpleShooter</code> to your player or weapon GameObject.</li>
+            <li>Set <strong>Bullet Prefab</strong> to your bullet, and <strong>Fire Point</strong> to a child Transform that indicates the muzzle position.</li>
+            <li>Press Play and hold <strong>Fire1</strong> (default: left mouse or Ctrl) to fire bullets in the <code>firePoint.right</code> direction.</li>
+          </ol>
+        </section>
+
+        <section class="integration-block reveal-on-scroll">
+          <h2>Common Errors</h2>
+          <ul>
+            <li>
+              <strong>Nothing spawns</strong> – Check that <code>bulletPrefab</code> and <code>firePoint</code>
+              are assigned in the Inspector.
+            </li>
+            <li>
+              <strong>Bullets don't move</strong> – Ensure bullet prefab has <code>Rigidbody2D</code> and that
+              gravity scale is set correctly if you want straight shots.
+            </li>
+            <li>
+              <strong>Too many bullets</strong> – Increase <strong>Fire Rate</strong> or implement bullet pooling
+              to avoid excessive instantiation.
+            </li>
+          </ul>
+        </section>
+
+        <section class="integration-block ai-block reveal-on-scroll">
+          <h2>Ask AI about this snippet</h2>
+          <p class="muted">
+            Tell AI how your input and bullets are set up, and it can suggest changes such as
+            directional aiming, gamepad input, or 3D variants.
+          </p>
+          <textarea
+            id="ai-question"
+            rows="4"
+            placeholder="Example: I want to aim with the mouse in 2D and fire toward the cursor. How can I change this script?"
+          ></textarea>
+          <button id="ai-ask-btn" class="secondary-btn">Ask AI</button>
+          <div id="ai-answer" class="ai-answer" aria-live="polite"></div>
+        </section>
+      </article>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

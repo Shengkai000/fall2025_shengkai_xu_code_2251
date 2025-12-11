@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Unreal Blueprint – Open Door on Overlap</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <a class="home" href="unreal-blueprint.html" aria-label="Back to Blueprint list">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M15.7 4.3a1 1 0 0 1 0 1.4L10.4 11l5.3 5.3a1 1 0 0 1-1.4 1.4l-6-6a1 1 0 0 1 0-1.4l6-6a1 1 0 0 1 1.4 0z"/>
+        </svg>
+      </a>
+      <h1 class="page-title">Open Door on Overlap</h1>
+    </header>
+
+    <main class="article-main">
+      <article class="article">
+        <header class="article-header reveal-on-scroll">
+          <p class="meta">
+            <span class="pill">Unreal</span>
+            <span class="pill">Blueprint</span>
+            <span class="pill pill-soft">Interaction</span>
+          </p>
+          <h2>Use a trigger volume to open a door</h2>
+          <p class="muted">
+            A common Blueprint pattern: when the player overlaps a trigger volume, play a Timeline
+            that rotates the door open. When the player leaves, close the door.
+          </p>
+        </header>
+
+        <section class="reveal-on-scroll">
+          <h3>Conceptual Blueprint steps</h3>
+          <pre><code id="snippet-code">
+// Blueprint-style pseudo steps:
+//
+// 1. Create a Door actor with a Static Mesh for the door.
+// 2. In the level, add a Box Trigger near the door.
+// 3. In the Level Blueprint or Door Blueprint:
+//    - Bind to Box Trigger's OnActorBeginOverlap and OnActorEndOverlap.
+//    - On begin overlap: check if Other Actor is the player, then play 'OpenDoor' Timeline.
+//    - On end overlap: check if Other Actor is the player, then play 'CloseDoor' Timeline.
+// 4. In the Timeline, animate a float from 0..1 and use Lerp (Rotator) to rotate the door mesh.
+          </code></pre>
+        </section>
+
+        <section class="integration-block reveal-on-scroll">
+          <h2>Integration Recipe</h2>
+          <ol>
+            <li>Create a Door Blueprint with a Static Mesh component as the visible door.</li>
+            <li>Place a Box Trigger in the level that overlaps the doorway, and reference the Door Blueprint.</li>
+            <li>In the Door Blueprint, add a Timeline called <code>OpenDoor</code> that drives a float from 0 to 1.</li>
+            <li>On the Timeline update, use that float to Lerp between closed and open rotations, and set the door mesh rotation.</li>
+            <li>On the Box Trigger's <code>OnActorBeginOverlap</code>, if the overlapping actor is the player, play the Timeline forward. On <code>OnActorEndOverlap</code>, play it in reverse.</li>
+          </ol>
+        </section>
+
+        <section class="integration-block reveal-on-scroll">
+          <h2>Common Errors</h2>
+          <ul>
+            <li>
+              <strong>Door never opens</strong> – Ensure overlap events fire by setting the Box Trigger's collision presets and checking that the player pawn generates overlap events.
+            </li>
+            <li>
+              <strong>Door rotates around the wrong pivot</strong> – Adjust the Static Mesh import settings or move the mesh so its pivot is at the hinge.
+            </li>
+            <li>
+              <strong>Timeline doesn't play</strong> – Confirm that you are calling <code>Play</code> or <code>PlayFromStart</code> on the Timeline from the overlap event.
+            </li>
+          </ul>
+        </section>
+
+        <section class="integration-block ai-block reveal-on-scroll">
+          <h2>Ask AI about this snippet</h2>
+          <p class="muted">
+            Describe your level setup and how your Blueprint is wired. AI can suggest where to put
+            events (Level Blueprint vs Actor Blueprint) and how to debug overlap problems.
+          </p>
+          <textarea
+            id="ai-question"
+            rows="4"
+            placeholder="Example: My Box Trigger overlaps the player but the door never opens. What should I check in my Blueprint?"
+          ></textarea>
+          <button id="ai-ask-btn" class="secondary-btn">Ask AI</button>
+          <div id="ai-answer" class="ai-answer" aria-live="polite"></div>
+        </section>
+      </article>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
