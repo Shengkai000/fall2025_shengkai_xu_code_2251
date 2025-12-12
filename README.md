@@ -1,4 +1,9 @@
 # fall2025_shengkai_xu_code_2251
+Creating .envfile.
+in the file it should has:
+OPENAI_API_KEY=xxxxxxxxxx
+
+
 
 #oct 29 2025
 make JS file for html
@@ -21,5 +26,6 @@ add Code Configurator part to see if it can work
 #dec 1 thank AI can be a good way start research
 
 #dec 4 try AI mix in my project
+
 
 #dec 7 every thing set up demo can be use to present
