@@ -1,5 +1,5 @@
 # fall2025_shengkai_xu_code_2251
-Creating .envfile.
+Creating .env file.
 in the file it should has:
 OPENAI_API_KEY=xxxxxxxxxx
 
@@ -29,3 +29,4 @@ add Code Configurator part to see if it can work
 
 
 #dec 7 every thing set up demo can be use to present
+
